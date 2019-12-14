@@ -29,7 +29,7 @@ Example config:
   assignees:
     - any
     - github
-    - reviewer
+    - assignee
     - you
     - want
   description_main_body: describe your changes here
