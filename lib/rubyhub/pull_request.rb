@@ -53,7 +53,7 @@ module Rubyhub
     end
 
     def add_open_settings
-      @query << ' --open'
+      @query << ' --browse'
     end
 
     def add_message
