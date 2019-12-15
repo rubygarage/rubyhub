@@ -1,6 +1,6 @@
 # Rubyhub
 
-Rubyhub allows you to create pull requests faster with all those labels, assignees and reviewers you always had to put manually.
+Rubyhub allows you to create pull requests faster with all сomponents - labels, assignees, reviewers and other stuff you had to put manually each time.
 
 ## Installation
 
@@ -20,23 +20,10 @@ Or install it yourself as:
 
 ## Usage
 
-1. Create `.rubyhub.yml` file with your own properties. Don't forget to add it to gitignore.
-Example config:
-```yaml
----
-  base_branch: master
-  label: needs review
-  assignees:
-    - any
-    - github
-    - assignee
-    - you
-    - want
-  description_main_body: describe your changes here
-  jira_base_url: https://sample.atlassian.net/browse/
-```
+1. Generate config file
 
-`description_main_body` and `jira_base_url` are optional.
+    `$ rubyhub install`
+    
+2. Create the templates for all subteams/needs in your repository and configure
 
-2. Run `bin/rubyhub`
-
+2. Run `rubyhub create -t your_template_name`
