@@ -24,13 +24,13 @@ Or install it yourself as:
 
 1. Generate config file
 
-    $ rubyhub install
+    `$ rubyhub install`
 
 2. Create the templates for all subteams/needs in your repository and configure
 
 2. Run pull request creator
 
-    $rubyhub create -t your_template_name
+    `$ rubyhub create -t your_template_name`
 
 ## Configuration options
 | Config                | Description                                                                                                                                                                                                                                                         | Example                                |
