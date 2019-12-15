@@ -33,9 +33,9 @@ Or install it yourself as:
     $rubyhub create -t your_template_name
 
 ## Configuration options
-
-| base_branch           | String. Define the base branch you Pull Request would be targeted to                                                                                                                                                                                    | develop                              |   |   |
+| Config                | Description                                                                                                                                                                                                                                             | Example                              |   |   |
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|---|---|
+| base_branch           | String. Define the base branch you Pull Request would be targeted to                                                                                                                                                                                    | develop                              |   |   |
 | reviewers             | Array. List of reviewers                                                                                                                                                                                                                                | - some_user - another_user           |   |   |
 | assignees             | Array. List of assignees                                                                                                                                                                                                                                | - some_user - another_user           |   |   |
 | labels                | Array. List of labels                                                                                                                                                                                                                                   | - needs_review - some_another_label  |   |   |
