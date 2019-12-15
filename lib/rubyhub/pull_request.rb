@@ -12,8 +12,8 @@ module Rubyhub
       add_labels if @labels&.any?
       add_assignees if @assignees&.any?
       add_reviewers if @reviewers&.any?
-      add_push_setting if @push
-      add_open_setting if @open
+      add_push_settings if @push
+      add_open_settings if @open
 
       @query
     end
