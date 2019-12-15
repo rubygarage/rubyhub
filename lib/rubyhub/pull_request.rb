@@ -25,7 +25,7 @@ module Rubyhub
     private
 
     def assign_attributes(options)
-      ATTRIBUTES.each { |attr| instance_variable_set(:"@#{attr}", options[:attr]) }
+      ATTRIBUTES.each { |attr| instance_variable_set(:"@#{attr}", options[attr]) }
     end
 
     def build_base_query
