@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Tool for faster creation of GitHub's Pull Requests"
   spec.description   = spec.summary
   spec.homepage      = 'https://github.com'
+  spec.license       = 'MIT'
 
   spec.metadata['allowed_push_host'] = 'http://mygemserver.com'
 
@@ -26,6 +27,8 @@ Gem::Specification.new do |spec|
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
+
+  spec.add_dependency 'thor'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'fasterer'

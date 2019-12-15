@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'rubyhub'
+require 'rubyhub/cli'
+
+Rubyhub::CLI.start(ARGV)

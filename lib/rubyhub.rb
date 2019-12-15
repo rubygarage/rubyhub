@@ -1,8 +1,5 @@
-require 'pry'
-require 'rubyhub/pull_requests_pusher'
-
 module Rubyhub
-  def self.run
-    PullRequestsPusher.call
+  def self.root_path
+    File.dirname(__dir__)
   end
 end

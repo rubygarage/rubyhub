@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     rubyhub (0.1.0)
+      thor
 
 GEM
   remote: https://rubygems.org/
@@ -51,6 +52,7 @@ GEM
     ruby_parser (3.14.1)
       sexp_processor (~> 4.9)
     sexp_processor (4.13.0)
+    thor (1.0.0)
     unicode-display_width (1.6.0)
 
 PLATFORMS
