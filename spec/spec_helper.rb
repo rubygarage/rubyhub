@@ -11,9 +11,4 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
-
-  config.before do
-    allow(Rubyhub::PullRequestsPusher).to receive(:create!)
-    stub_const('Rubyhub::DefaultInfoLoader::DOTFILE', 'spec/fixtures/.rubyhub.yml')
-  end
 end
