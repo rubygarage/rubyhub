@@ -4,7 +4,7 @@ Rubyhub allows you to create pull requests faster with all сomponents - labels,
 
 ## Installation
 
-Install [Github Hub]https://github.com/github/hub
+Install [Github's Hub](https://github.com/github/hub)
 
 Add this line to your application's Gemfile:
 
