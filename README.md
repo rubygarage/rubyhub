@@ -4,7 +4,7 @@ Rubyhub allows you to create pull requests faster with all сomponents - labels,
 
 ## Installation
 
-Install [Github's Hub]https://github.com/github/hub
+Install [Github Hub]https://github.com/github/hub
 
 Add this line to your application's Gemfile:
 
@@ -26,7 +26,7 @@ Or install it yourself as:
 
     `$ rubyhub install`
 
-2. Create the templates for all subteams/needs in your repository and configure
+2. Create the templates for all subteams/needs in your repository and configure each template with provided options
 
 2. Run pull request creator
 
