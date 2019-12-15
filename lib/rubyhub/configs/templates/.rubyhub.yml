@@ -1,0 +1,34 @@
+# template:
+#   default: &default
+#     base_branch: master
+#     labels:
+#       - needs review
+#       - another label
+#     assignees:
+#       - any
+#       - github
+#       - assignee
+#       - you
+#       - want
+#     reviewers:
+#       - any
+#       - github
+#       - reviewers
+#       - you
+#       - want
+#     description_main_body: describe your changes here
+#     jira_base_url: https://sample.atlassian.net/browse/
+#     push: false
+#     open: true
+#   backend:
+#     <<: *default
+#     reviewers:
+#       - some
+#       - backend
+#       - developers
+#   frontend:
+#     <<: *default
+#     reviewers:
+#       - some
+#       - backend
+#       - developers
