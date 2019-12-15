@@ -1,6 +1,7 @@
 require 'rubyhub/errors'
 require 'singleton'
 require 'yaml'
+require 'pry'
 
 module Rubyhub
   class Configuration
@@ -25,7 +26,7 @@ module Rubyhub
     private
 
     def load_from_file
-      YAML.load_file(CONFIG_PATH).transform_keys(&:to_sym)
+      DeepSymbolizeKeysHelper.symbolize_recursive(YAML.load_file(CONFIG_PATH) || {})
     end
   end
 end

@@ -1,9 +1,4 @@
 require 'thor'
-require 'pry'
-require 'rubyhub/configuration'
-
-require 'rubyhub/operations/configuration/setup'
-require 'rubyhub/operations/pull_request/create'
 
 module Rubyhub
   class CLI < Thor
