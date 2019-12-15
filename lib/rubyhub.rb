@@ -1,6 +1,8 @@
-require "rubyhub/version"
+require 'pry'
+require 'rubyhub/pull_requests_pusher'
 
 module Rubyhub
-  class Error < StandardError; end
-  # Your code goes here...
+  def self.run
+    PullRequestsPusher.call
+  end
 end
