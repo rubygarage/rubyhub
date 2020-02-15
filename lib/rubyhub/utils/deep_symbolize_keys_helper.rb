@@ -13,7 +13,7 @@ module DeepSymbolizeKeysHelper
     case thing
     when Hash then symbolize_recursive(thing)
     when Array then thing.map { |v| transform(v) }
-    else; thing
+    else thing
     end
   end
 

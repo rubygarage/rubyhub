@@ -8,12 +8,13 @@ module Rubyhub
 
     def to_command
       build_base_query
-      add_branch if @base_branch
-      add_labels if @labels&.any?
-      add_assignees if @assignees&.any?
-      add_reviewers if @reviewers&.any?
-      add_push_settings if @push
-      add_open_settings if @open
+      add_branch
+      add_labels
+      add_assignees
+      add_reviewers
+      add_push_settings
+      add_open_settings
+      add_message
 
       @query
     end
@@ -33,27 +34,27 @@ module Rubyhub
     end
 
     def add_branch
-      @query << " -b '#{@base_branch}'"
+      @query << " -b '#{@base_branch}'" if @base_branch
     end
 
     def add_labels
-      @query << " -l '#{@labels.join(',')}'"
+      @query << " -l '#{@labels.join(',')}'" if @labels&.any?
     end
 
     def add_assignees
-      @query << " -a '#{@assignees.join(',')}'"
+      @query << " -a '#{@assignees.join(',')}'" if @assignees&.any?
     end
 
     def add_reviewers
-      @query << " -r '#{@reviewers.join(',')}'"
+      @query << " -r '#{@reviewers.join(',')}'" if @reviewers&.any?
     end
 
     def add_push_settings
-      @query << ' --push -f'
+      @query << ' --push -f' if @push
     end
 
     def add_open_settings
-      @query << ' --browse'
+      @query << ' --browse' if @open
     end
 
     def add_message

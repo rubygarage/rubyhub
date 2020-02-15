@@ -1,7 +1,6 @@
 require 'rubyhub/errors'
 require 'singleton'
 require 'yaml'
-require 'pry'
 
 module Rubyhub
   class Configuration
