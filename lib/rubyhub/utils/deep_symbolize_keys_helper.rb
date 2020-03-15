@@ -11,8 +11,8 @@ module DeepSymbolizeKeysHelper
 
   def transform(thing)
     case thing
-    when Hash; symbolize_recursive(thing)
-    when Array; thing.map { |v| transform(v) }
+    when Hash then symbolize_recursive(thing)
+    when Array then thing.map { |v| transform(v) }
     else; thing
     end
   end
