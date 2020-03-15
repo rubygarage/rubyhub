@@ -77,12 +77,12 @@ module Rubyhub
     end
 
     def jira_ticket
-      [data[:jira_base_url], branch_name].join
+      [@jira_base_url, branch_name].join
     end
 
     def message
       description = "#{branch_type} | #{branch_name.strip}\n\n"
-      description << "JIRA ticket - #{jira_ticket}" if data[:jira_base_url]
+      description << "JIRA ticket - #{jira_ticket}" if @jira_base_url
       description << @description_main_body if @description_main_body
       description
     end
