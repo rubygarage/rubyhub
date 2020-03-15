@@ -23,18 +23,18 @@ RSpec.describe Rubyhub::PullRequest do
   end
   let(:query_params) do
     [
-      "hub pull-request",
+      'hub pull-request',
       base_branch_query,
       label_query,
       assignees_query,
       reviewers_query,
       "-m '#{current_branch}\n | \n\nJIRA ticket - #{jira_base_url}\n\n#{description_main_body}'",
-      "--push -f",
-      "--browse"
+      '--push -f',
+      '--browse'
     ]
   end
 
-  let(:query) { query_params.join(' ')}
+  let(:query) { query_params.join(' ') }
 
   describe '#to_command' do
     context 'when passed all params' do
@@ -64,7 +64,7 @@ RSpec.describe Rubyhub::PullRequest do
 
   describe '#create!' do
     it 'calls to_command to build the query' do
-      expect_any_instance_of(described_class).to receive(:to_command).and_return(String.new)
+      expect_any_instance_of(described_class).to receive(:to_command).and_return('')
       described_class.new(params).create!
     end
   end
