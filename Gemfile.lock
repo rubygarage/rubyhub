@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubyhub (0.1.2)
+    rubyhub (0.1.7)
       thor
 
 GEM
@@ -52,7 +52,7 @@ GEM
     ruby_parser (3.14.1)
       sexp_processor (~> 4.9)
     sexp_processor (4.13.0)
-    thor (1.0.0)
+    thor (1.0.1)
     unicode-display_width (1.6.0)
 
 PLATFORMS
@@ -70,4 +70,4 @@ DEPENDENCIES
   rubyhub!
 
 BUNDLED WITH
-   2.0.2
+   2.1.4
