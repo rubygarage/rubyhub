@@ -1,4 +1,3 @@
-require 'pry'
 module Rubyhub
   module Operations
     module PullRequest
