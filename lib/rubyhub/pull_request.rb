@@ -38,15 +38,15 @@ module Rubyhub
     end
 
     def add_labels
-      @query << " -l '#{@labels.join(',')}'" if @labels.to_a.any?
+      @query << " -l '#{@labels.to_a.join(',')}'" if @labels.to_a.any?
     end
 
     def add_assignees
-      @query << " -a '#{@assignees.join(',')}'" if @assignees.to_a.any?
+      @query << " -a '#{@assignees.to_a.join(',')}'" if @assignees.to_a.any?
     end
 
     def add_reviewers
-      @query << " -r '#{@reviewers.join(',')}'" if @reviewers.to_a  .any?
+      @query << " -r '#{@reviewers.to_a.join(',')}'" if @reviewers.to_a.any?
     end
 
     def add_push_settings
