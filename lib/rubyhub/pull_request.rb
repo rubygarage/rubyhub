@@ -12,6 +12,7 @@ module Rubyhub
       add_labels
       add_assignees
       add_reviewers
+      add_message
       add_push_settings
       add_open_settings
 
