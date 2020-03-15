@@ -83,7 +83,7 @@ module Rubyhub
 
     def message
       description = "#{branch_type} | #{branch_name.strip}\n\n"
-      description << "JIRA ticket - #{jira_ticket}" if @jira_base_url
+      description << "JIRA ticket - #{jira_ticket}\n\n" if @jira_base_url
       description << @description_main_body if @description_main_body
       description
     end
