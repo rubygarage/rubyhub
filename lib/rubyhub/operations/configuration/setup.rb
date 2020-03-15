@@ -8,12 +8,10 @@ module Rubyhub
 
         class << self
           def call
-            if Rubyhub::Configuration.exists?
-              puts 'Config already exists!'
-            else
-              initialize_config
-              puts 'Config successfully installed!'
-            end
+            return puts 'Config already exists!' if Rubyhub::Configuration.exists?
+
+            initialize_config
+            puts 'Config successfully installed!'
           end
 
           private

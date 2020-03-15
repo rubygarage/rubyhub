@@ -1,5 +1,6 @@
 require 'bundler/setup'
 require 'rubyhub'
+require 'ffaker'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -10,5 +11,9 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+
+  config.before do
+    allow(Kernel).to receive(:system)
   end
 end

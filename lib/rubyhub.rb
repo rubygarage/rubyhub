@@ -1,5 +1,6 @@
 require 'rubyhub/utils/deep_symbolize_keys_helper'
-
+require 'rubyhub/utils/hash'
+require 'rubyhub/utils/string'
 using DeepSymbolizeKeysHelper
 
 require 'rubyhub/configuration'
