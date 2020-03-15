@@ -2,6 +2,7 @@ require 'bundler/setup'
 
 require 'simplecov'
 SimpleCov.start
+SimpleCov.minimum_coverage(90)
 
 require 'rubyhub'
 require 'ffaker'
