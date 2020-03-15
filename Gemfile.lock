@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubyhub (0.1.7)
+    rubyhub (0.1.8)
       thor
 
 GEM
