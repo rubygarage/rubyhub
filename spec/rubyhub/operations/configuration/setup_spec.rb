@@ -17,7 +17,7 @@ RSpec.describe Rubyhub::Operations::Configuration::Setup do
       end
 
       it 'puts message about existing configuration' do
-        expect{described_class.call}.to output(described_class::CONFIG_EXISTS_MESSAGE + "\n").to_stdout
+        expect { described_class.call }.to output(described_class::CONFIG_EXISTS_MESSAGE + "\n").to_stdout
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe Rubyhub::Operations::Configuration::Setup do
       end
 
       it 'puts message about successfully installed configuration' do
-        expect{described_class.call}.to output(described_class::CONFIG_INSTALLED_MESSAGE + "\n").to_stdout
+        expect { described_class.call }.to output(described_class::CONFIG_INSTALLED_MESSAGE + "\n").to_stdout
       end
     end
   end
