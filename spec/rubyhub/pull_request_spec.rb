@@ -9,6 +9,9 @@ RSpec.describe Rubyhub::PullRequest do
   let(:jira_base_url) { 'https://sample.atlassian.net/browse/' }
   let(:description_main_body) { FFaker::Lorem.sentence }
   let(:current_branch) { `git rev-parse --symbolic-full-name --abbrev-ref HEAD`.strip.capitalize }
+  let(:current_branch_type) { current_branch.split('/')[0] }
+  let(:current_branch_name) { current_branch.split('/')[1].upcase }
+
   let(:params) do
     {
       base_branch: base_branch,
@@ -28,7 +31,7 @@ RSpec.describe Rubyhub::PullRequest do
       label_query,
       assignees_query,
       reviewers_query,
-      "-m '#{current_branch}\n | \n\nJIRA ticket - #{jira_base_url}\n\n#{description_main_body}'",
+      "-m '#{current_branch_type} | #{current_branch_name}\n\nJIRA ticket - #{jira_base_url}#{current_branch_name}\n\n\n#{description_main_body}'",
       '--push -f',
       '--browse'
     ]
