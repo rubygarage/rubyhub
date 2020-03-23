@@ -8,12 +8,13 @@ module Rubyhub
 
     def to_command
       build_base_query
-      add_branch if @base_branch
-      add_labels if @labels&.any?
-      add_assignees if @assignees&.any?
-      add_reviewers if @reviewers&.any?
-      add_push_settings if @push
-      add_open_settings if @open
+      add_branch
+      add_labels
+      add_assignees
+      add_reviewers
+      add_message
+      add_push_settings
+      add_open_settings
 
       @query
     end
@@ -33,27 +34,27 @@ module Rubyhub
     end
 
     def add_branch
-      @query << " -b '#{@base_branch}'"
+      @query << " -b '#{@base_branch}'" if @base_branch
     end
 
     def add_labels
-      @query << " -l '#{@labels.join(',')}'"
+      @query << " -l '#{@labels.to_a.join(',')}'" if @labels.to_a.any?
     end
 
     def add_assignees
-      @query << " -a '#{@assignees.join(',')}'"
+      @query << " -a '#{@assignees.to_a.join(',')}'" if @assignees.to_a.any?
     end
 
     def add_reviewers
-      @query << " -r '#{@reviewers.join(',')}'"
+      @query << " -r '#{@reviewers.to_a.join(',')}'" if @reviewers.to_a.any?
     end
 
     def add_push_settings
-      @query << ' --push -f'
+      @query << ' --push -f' if @push
     end
 
     def add_open_settings
-      @query << ' --browse'
+      @query << ' --browse' if @open
     end
 
     def add_message
@@ -77,12 +78,12 @@ module Rubyhub
     end
 
     def jira_ticket
-      [data[:jira_base_url], branch_name].join
+      [@jira_base_url, branch_name].join
     end
 
     def message
       description = "#{branch_type} | #{branch_name.strip}\n\n"
-      description << "JIRA ticket - #{jira_ticket}" if data[:jira_base_url]
+      description << "JIRA ticket - #{jira_ticket}\n\n" if @jira_base_url
       description << @description_main_body if @description_main_body
       description
     end

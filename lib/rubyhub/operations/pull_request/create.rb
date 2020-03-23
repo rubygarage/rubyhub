@@ -1,4 +1,3 @@
-require 'pry'
 module Rubyhub
   module Operations
     module PullRequest
@@ -7,7 +6,7 @@ module Rubyhub
           def call(options)
             @template = options[:template]
             raise ConfigFileDoesNotExistError unless Rubyhub::Configuration.exists?
-            raise IncorrectTemplateError if !@template || !data || data.empty?
+            raise IncorrectTemplateError if !template || !data || data.empty?
 
             Rubyhub::PullRequest.new(data).create!
           end
@@ -17,7 +16,7 @@ module Rubyhub
           attr_reader :template
 
           def data
-            @data ||= Rubyhub::Configuration.instance.to_h.dig(:template, @template.to_sym)
+            @data ||= Rubyhub::Configuration.instance.to_h.dig(:template, template.to_sym)
           end
         end
       end

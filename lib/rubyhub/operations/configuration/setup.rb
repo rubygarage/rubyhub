@@ -5,15 +5,15 @@ module Rubyhub
     module Configuration
       class Setup
         TEMPLATE_PATH = 'lib/rubyhub/config/templates/.rubyhub.yml'.freeze
+        CONFIG_EXISTS_MESSAGE = 'Config already exists!'.freeze
+        CONFIG_INSTALLED_MESSAGE = 'Config successfully installed!'.freeze
 
         class << self
           def call
-            if Rubyhub::Configuration.exists?
-              puts 'Config already exists!'
-            else
-              initialize_config
-              puts 'Config successfully installed!'
-            end
+            return puts CONFIG_EXISTS_MESSAGE if Rubyhub::Configuration.exists?
+
+            initialize_config
+            puts CONFIG_INSTALLED_MESSAGE
           end
 
           private

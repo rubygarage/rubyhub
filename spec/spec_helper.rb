@@ -1,5 +1,11 @@
 require 'bundler/setup'
+
+require 'simplecov'
+SimpleCov.start
+SimpleCov.minimum_coverage(90)
+
 require 'rubyhub'
+require 'ffaker'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -12,8 +18,9 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.order = :random
+
   config.before do
-    allow(Rubyhub::PullRequestsPusher).to receive(:create!)
-    stub_const('Rubyhub::DefaultInfoLoader::DOTFILE', 'spec/fixtures/.rubyhub.yml')
+    allow(Kernel).to receive(:system)
   end
 end

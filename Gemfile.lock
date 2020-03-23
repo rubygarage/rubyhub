@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubyhub (0.1.2)
+    rubyhub (0.1.8)
       thor
 
 GEM
@@ -11,9 +11,11 @@ GEM
     coderay (1.1.2)
     colorize (0.8.1)
     diff-lcs (1.3)
+    docile (1.3.2)
     fasterer (0.8.1)
       colorize (~> 0.7)
       ruby_parser (>= 3.14.1)
+    ffaker (2.14.0)
     jaro_winkler (1.5.4)
     method_source (0.9.2)
     parallel (1.19.1)
@@ -52,7 +54,11 @@ GEM
     ruby_parser (3.14.1)
       sexp_processor (~> 4.9)
     sexp_processor (4.13.0)
-    thor (1.0.0)
+    simplecov (0.18.5)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+    simplecov-html (0.12.2)
+    thor (1.0.1)
     unicode-display_width (1.6.0)
 
 PLATFORMS
@@ -61,6 +67,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   fasterer
+  ffaker
   pry
   rake
   rspec
@@ -68,6 +75,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rspec
   rubyhub!
+  simplecov
 
 BUNDLED WITH
-   2.0.2
+   2.1.4
