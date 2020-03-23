@@ -8,6 +8,7 @@
 /spec/tmp/
 /tmp/
 .history
+/lib/rubyhub/operations/assets
 
 
 # rspec failure tracking
