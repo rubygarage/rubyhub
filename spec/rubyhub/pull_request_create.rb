@@ -1,4 +1,3 @@
-module Rubyhub
   RSpec.describe Rubyhub::Operations::PullRequest::Create do
     let(:options) { { template: 'your_template_name' } }
 
@@ -17,4 +16,3 @@ module Rubyhub
       end
     end
   end
-end
