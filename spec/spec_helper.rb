@@ -1,5 +1,4 @@
 require 'bundler/setup'
-<<<<<<< HEAD
 
 require 'simplecov'
 SimpleCov.start
