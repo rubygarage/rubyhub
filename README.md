@@ -24,7 +24,7 @@ Or install it yourself as:
 
 1. Generate config file
 
-    `$ rubyhub install`
+    `$ rubyhub init`
 
 2. Create the templates for all subteams/needs in your repository and configure each template with provided options
 
