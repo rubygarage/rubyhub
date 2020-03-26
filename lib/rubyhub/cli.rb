@@ -7,7 +7,7 @@ module Rubyhub
       Operations::Configuration::Setup.call
     end
 
-    desc 'pr:create', 'Create Pull Request'
+    desc 'create', 'Create Pull Request'
     method_option :template, aliases: '-t', type: :string
     def create(*_args)
       Operations::PullRequest::Create.call(options)

@@ -10,4 +10,10 @@ module Rubyhub
       'You haven\'t pass the template name or template name not present in config file'
     end
   end
+
+  class IncorrectTemplateNameError < StandardError
+    def message
+      'You\'ve passed incorrect template name. Please, provide appropriate one'
+    end
+  end
 end
