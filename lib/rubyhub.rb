@@ -4,6 +4,7 @@ require 'rubyhub/utils/string'
 using DeepSymbolizeKeysHelper
 
 require 'rubyhub/configuration'
+require 'rubyhub/desc_configuration'
 require 'rubyhub/pull_request'
 
 require 'rubyhub/operations/configuration/setup'

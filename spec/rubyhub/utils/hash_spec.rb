@@ -12,7 +12,7 @@ RSpec.describe Hash do
     end
   end
 
-  describe '#except' do
+  describe '#except!' do
     it 'returns a hash that includes everything except given keys' do
       new_hash = hash.dup
       expect(new_hash.except!(:a, :b)).to eq({ c: nil })
