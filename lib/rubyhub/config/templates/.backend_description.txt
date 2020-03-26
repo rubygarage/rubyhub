@@ -1,4 +1,3 @@
-BACKEND
 ### Before submitting the merge request make sure the following are checked
 - [ ] Followed the style guidelines of this project
 - [ ] Performed a self-review of own code
