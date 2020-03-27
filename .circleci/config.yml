@@ -1,0 +1,55 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.6.3-node-browsers
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "rubyhub.gemspec" }}
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            gem update --system
+            gem install bundler
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop
+
+      - run:
+          name: Fasterer
+          command: bundle exec fasterer
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "rubyhub.gemspec" }}
+
+
+      - run:
+          name: run tests
+          command: |
+            mkdir -p /tmp/test-results
+            circleci tests glob "spec/**/*_spec.rb" > test_files.txt
+            cat test_files.txt | circleci tests split --split-by=timings > split_test_files.txt
+
+            TESTFILES="$(cat split_test_files.txt | xargs)"
+            if [ -z "$TESTFILES" ]; then echo  'No tests are scheduled to be executed on this node'; exit 0; fi
+
+            export SPEC="$TESTFILES"
+            export SPEC_OPTS="--format documentation --format RspecJunitFormatter --out tmp/rspec/rspec-${CIRCLE_NODE_INDEX:-0}.xml"
+
+            bundle exec rspec
+
+      - store_test_results:
+          path: tmp/rspec
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
