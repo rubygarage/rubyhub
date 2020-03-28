@@ -6,12 +6,14 @@ require 'pry'
 module Rubyhub
   class Configuration
     include Singleton
-    attr_reader :options
+    attr_reader :options, :main_body
 
     CONFIG_PATH = '.rubyhub.yml'.freeze
+    DESCRIPTION_CONFIG_PATH = '/.description.txt'.freeze
 
     def initialize
       @options = self.class.exists? ? load_from_file : {}
+      @main_body = File.read(Dir.pwd + DESCRIPTION_CONFIG_PATH)
     end
 
     class << self

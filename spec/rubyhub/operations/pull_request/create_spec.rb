@@ -1,8 +1,14 @@
 RSpec.describe Rubyhub::Operations::PullRequest::Create do
   let(:options) { { 'template': 'backend' } }
   let(:data) { { labels: 'label' } }
+  let(:invalid_template) { { 'template': 'backenda' } }
+  let(:file) { Dir.pwd + Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH }
 
   describe '.call' do
+    after do
+      File.delete(file) if File.exist?(file)
+    end
+
     context 'when configuration does not exist' do
       before do
         allow(Rubyhub::Configuration).to receive(:exists?).and_return(false)
@@ -18,10 +24,11 @@ RSpec.describe Rubyhub::Operations::PullRequest::Create do
     context 'when template name is not provided' do
       before do
         allow(Rubyhub::Configuration).to receive(:exists?).and_return(true, false)
+        allow(described_class).to receive(:initialize_description_file).and_raise(Rubyhub::IncorrectTemplateError)
       end
 
       it 'raises error message about template name absence' do
-        expect { described_class.call(options) }.to raise_error(Rubyhub::IncorrectTemplateError) do |ex|
+        expect { described_class.call(invalid_template) }.to raise_error(Rubyhub::IncorrectTemplateError) do |ex|
           expect(ex.message).to eq('You haven\'t pass the template name or template name not present in config file')
         end
       end
