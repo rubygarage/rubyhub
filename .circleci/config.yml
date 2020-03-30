@@ -3,6 +3,12 @@ jobs:
   build:
     docker:
       - image: circleci/ruby:2.6.3-node-browsers
+        environment:
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+      - image: circleci/postgres:10.10
+        environment:
+          POSTGRES_USER: circleci
 
     steps:
       - checkout
