@@ -25,6 +25,14 @@ jobs:
             gem install bundler
             bundle install --jobs=4 --retry=3 --path vendor/bundle
   test:
+    docker:
+      - image: circleci/ruby:2.6.3-node-browsers
+        environment:
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+      - image: circleci/postgres:10.10
+        environment:
+          POSTGRES_USER: circleci
     steps:
       - run:
           name: Rubocop
