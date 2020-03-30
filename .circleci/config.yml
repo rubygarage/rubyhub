@@ -69,9 +69,7 @@ jobs:
     executor: default
     steps:
       - defaults
-      - run_linters:
-          requires:
-            - defaults
+      - run_linters
 
 workflows:
   version: 2
