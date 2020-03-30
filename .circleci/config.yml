@@ -1,6 +1,7 @@
 version: 2
-jobs:
-  build:
+
+executors:
+  default:
     docker:
       - image: circleci/ruby:2.6.3-node-browsers
         environment:
@@ -9,6 +10,11 @@ jobs:
       - image: circleci/postgres:10.10
         environment:
           POSTGRES_USER: circleci
+
+
+jobs:
+  build:
+    executor: default
 
     steps:
       - checkout
@@ -25,14 +31,8 @@ jobs:
             gem install bundler
             bundle install --jobs=4 --retry=3 --path vendor/bundle
   test:
-    docker:
-      - image: circleci/ruby:2.6.3-node-browsers
-        environment:
-          RAILS_ENV: test
-          PGHOST: 127.0.0.1
-      - image: circleci/postgres:10.10
-        environment:
-          POSTGRES_USER: circleci
+    executor: default
+
     steps:
       - run:
           name: Rubocop
