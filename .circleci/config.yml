@@ -18,6 +18,12 @@ jobs:
             gem update --system
             gem install bundler
             bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - run:
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
   test:
     steps:
       - run:
@@ -48,14 +54,44 @@ jobs:
 
             bundle exec rspec
 
+      - run:
+          name: Code Climate Test Coverage
+          command: |
+            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
+
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - codeclimate.*.json
+
       - store_test_results:
           path: tmp/rspec
+
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
+
+  upload-coverage:
+    docker:
+      - image: circleci/ruby:2.6.3-node-browsers
+    environment:
+      CC_TEST_REPORTER_ID: e8ca212e976015d9bf1c9a519376032b4919c7da46a7cc30fd14de2eff2a5945
+    working_directory: ~/bikeindex/bike_index
+    steps:
+      - attach_workspace:
+          at: ~/bikeindex/bike_index
+
+      - run:
+          command: |
+            ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
+      - upload-coverage:
+          requires:
+            - test
