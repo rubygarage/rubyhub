@@ -11,11 +11,7 @@ executors:
         environment:
           POSTGRES_USER: circleci
 
-
-jobs:
   build:
-    executor: default
-
     steps:
       - checkout
 
@@ -31,8 +27,6 @@ jobs:
             gem install bundler
             bundle install --jobs=4 --retry=3 --path vendor/bundle
   test:
-    executor: default
-
     steps:
       - run:
           name: Rubocop
@@ -67,11 +61,18 @@ jobs:
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
-workflows:
-  version: 2
+
+jobs:
   build_and_test:
-    jobs:
+    executor: default
+    steps:
       - build
       - test:
           requires:
             - build
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build_and_test
