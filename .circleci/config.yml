@@ -72,11 +72,7 @@ jobs:
       - image: circleci/ruby:2.6.3-node-browsers
     environment:
       CC_TEST_REPORTER_ID: e8ca212e976015d9bf1c9a519376032b4919c7da46a7cc30fd14de2eff2a5945
-    working_directory: ~/rubyhub/tmp
     steps:
-      - attach_workspace:
-          at: ~/rubyhub/tmp
-
       - run:
           command: |
             ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
