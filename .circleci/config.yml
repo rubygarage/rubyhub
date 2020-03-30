@@ -24,6 +24,7 @@ jobs:
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
+
   test:
     steps:
       - run:
@@ -33,11 +34,6 @@ jobs:
       - run:
           name: Fasterer
           command: bundle exec fasterer
-
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "rubyhub.gemspec" }}
 
       - run:
           name: run tests
@@ -50,7 +46,7 @@ jobs:
             if [ -z "$TESTFILES" ]; then echo  'No tests are scheduled to be executed on this node'; exit 0; fi
 
             export SPEC="$TESTFILES"
-            export SPEC_OPTS="--format documentation --format RspecJunitFormatter --out tmp/rspec/rspec-${CIRCLE_NODE_INDEX:-0}.xml"
+            export SPEC_OPTS="--format documentation --format RspecJunitFormatter --out tmp/test-results/rspec-${CIRCLE_NODE_INDEX:-0}.xml"
 
             bundle exec rspec
 
@@ -65,7 +61,7 @@ jobs:
             - codeclimate.*.json
 
       - store_test_results:
-          path: tmp/rspec
+          path: /tmp/test-results
 
       - store_artifacts:
           path: /tmp/test-results
@@ -76,10 +72,10 @@ jobs:
       - image: circleci/ruby:2.6.3-node-browsers
     environment:
       CC_TEST_REPORTER_ID: e8ca212e976015d9bf1c9a519376032b4919c7da46a7cc30fd14de2eff2a5945
-    working_directory: ~/bikeindex/bike_index
+    working_directory: ~/rubyhub/tmp
     steps:
       - attach_workspace:
-          at: ~/bikeindex/bike_index
+          at: ~/rubyhub/tmp
 
       - run:
           command: |
