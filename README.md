@@ -1,5 +1,5 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/2f8176977639f71eadb2/maintainability)](https://codeclimate.com/github/Ahontic/bookstore_rg/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/2f8176977639f71eadb2/test_coverage)](https://codeclimate.com/github/Ahontic/bookstore_rg/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c62b766b3425f4176152/maintainability)](https://codeclimate.com/github/rubygarage/rubyhub/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/c62b766b3425f4176152/test_coverage)](https://codeclimate.com/github/rubygarage/rubyhub/test_coverage)
 # Rubyhub
 
 Rubyhub allows you to create pull requests faster with all сomponents - labels, assignees, reviewers and other stuff you had to put manually each time.
