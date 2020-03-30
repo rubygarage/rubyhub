@@ -31,7 +31,8 @@ RSpec.describe Rubyhub::PullRequest do
       label_query,
       assignees_query,
       reviewers_query,
-      "-m '#{current_branch_type} | #{current_branch_name}\n\nJIRA ticket - #{jira_base_url}#{current_branch_name}\n\n\n#{description_main_body}'",
+      "-m '#{current_branch_type} | #{current_branch_name}\n\nJIRA ticket - #{jira_base_url}#{current_branch_name}\n\n
+#{description_main_body}'",
       '--push -f',
       '--browse'
     ]
