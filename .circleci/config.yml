@@ -2,6 +2,7 @@ version: 2
 
 executors:
   default:
+    working_directory: ~/rubyhub
     docker:
       - image: circleci/ruby:2.6.3-node-browsers
         environment:
