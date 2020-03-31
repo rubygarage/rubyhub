@@ -11,6 +11,8 @@ executors:
       - image: circleci/postgres:10.10
         environment:
           POSTGRES_USER: circleci
+    environment:
+      CC_TEST_REPORTER_ID: e8ca212e976015d9bf1c9a519376032b4919c7da46a7cc30fd14de2eff2a5945
 
 commands:
   defaults:
@@ -66,9 +68,9 @@ commands:
             ./tmp/cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
 
       - persist_to_workspace:
-        root: coverage
-        paths:
-          - codeclimate.*.json
+          root: coverage
+          paths:
+            - codeclimate.*.json
 
       - store_test_results:
           path: /tmp/test-results
@@ -76,13 +78,11 @@ commands:
           path: /tmp/test-results
           destination: test-results
 
-    upload-coverage:
-      environment:
-        CC_TEST_REPORTER_ID: e8ca212e976015d9bf1c9a519376032b4919c7da46a7cc30fd14de2eff2a5945
-      steps:
-        - run:
-            command: |
-              ./tmp/cc-test-reporter sum-coverage --output - codeclimate.*.json | ./tmp/cc-test-reporter upload-coverage --debug --input -
+  upload_coverage:
+    steps:
+      - run:
+          command: |
+            ./tmp/cc-test-reporter sum-coverage --output - codeclimate.*.json | ./tmp/cc-test-reporter upload-coverage --debug --input -
 
 jobs:
   build_and_test:
@@ -93,7 +93,7 @@ jobs:
   uploading_coverage:
     executor: default
     steps:
-      - upload-coverage
+      - upload_coverage
 
 workflows:
   version: 2.1
@@ -101,5 +101,5 @@ workflows:
     jobs:
       - build_and_test
       - uploading_coverage:
-        requires:
-          - build_and_test
+          requires:
+            - build_and_test
