@@ -2,7 +2,7 @@ RSpec.describe Rubyhub::Operations::PullRequest::Create do
   let(:options) { { 'template': 'backend' } }
   let(:data) { { labels: 'label' } }
   let(:invalid_template) { { 'template': 'backenda' } }
-  let(:file) { Dir.pwd + Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH }
+  let(:file) { Dir.pwd + '/' + Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH }
 
   describe '.call' do
     after do

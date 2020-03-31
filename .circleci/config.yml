@@ -65,7 +65,7 @@ commands:
       - run:
           name: Code Climate Test Coverage
           command: |
-            ./cc-test-reporter format-coverage --debug -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
+            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
       - persist_to_workspace:
           root: coverage
           paths:
@@ -74,7 +74,7 @@ commands:
       - run:
           name: Code Climate Upload Coverage
           command: |
-            ./cc-test-reporter sum-coverage --debug --output - coverage/codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
+            ./cc-test-reporter sum-coverage --output - coverage/codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
 
       - store_test_results:
           path: /tmp/test-results

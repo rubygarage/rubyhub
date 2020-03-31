@@ -1,9 +1,0 @@
-### Before submitting the merge request make sure the following are checked
-- [ ] Followed the style guidelines of this project
-- [ ] Performed a self-review of own code
-- [ ] Wrote the tests that prove that fix is effective/that feature works
-- [ ] Check correctness of commit names/branch name/assignees list/labels
-### Notable changes
-- Describe all the changes in PR with a list
-### Commands to run
-- If PR contains Rake tasks/seeds/credentials changes - describe them below with a list
