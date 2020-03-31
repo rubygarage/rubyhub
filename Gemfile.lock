@@ -17,6 +17,7 @@ GEM
       ruby_parser (>= 3.14.1)
     ffaker (2.14.0)
     jaro_winkler (1.5.4)
+    json (2.3.0)
     method_source (1.0.0)
     parallel (1.19.1)
     parser (2.7.0.5)
@@ -58,10 +59,11 @@ GEM
     ruby_parser (3.14.2)
       sexp_processor (~> 4.9)
     sexp_processor (4.14.1)
-    simplecov (0.18.5)
+    simplecov (0.17.1)
       docile (~> 1.1)
-      simplecov-html (~> 0.11)
-    simplecov-html (0.12.2)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.2)
     thor (1.0.1)
     unicode-display_width (1.6.1)
 
@@ -80,7 +82,7 @@ DEPENDENCIES
   rubocop-performance (~> 1.5.2)
   rubocop-rspec (~> 1.38.1)
   rubyhub!
-  simplecov (~> 0.18.5)
+  simplecov (~> 0.15, < 0.18)
 
 BUNDLED WITH
    2.1.4
