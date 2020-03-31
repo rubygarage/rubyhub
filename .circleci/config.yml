@@ -71,17 +71,15 @@ commands:
           paths:
             - codeclimate.*.json
 
+      - run:
+          command: |
+            ./cc-test-reporter sum-coverage --output - coverage/codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
+
       - store_test_results:
           path: /tmp/test-results
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
-
-  upload_coverage:
-    steps:
-      - run:
-          command: |
-            ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
 
 jobs:
   build_and_test:
@@ -89,7 +87,6 @@ jobs:
     steps:
       - defaults
       - run_linters
-      - upload_coverage
 
 workflows:
   version: 2.1
