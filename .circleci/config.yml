@@ -1,11 +1,26 @@
-version: 2
-jobs:
-  build:
+version: 2.1
+
+executors:
+  default:
+    working_directory: ~/rubyhub
     docker:
       - image: circleci/ruby:2.6.3-node-browsers
+        environment:
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+      - image: circleci/postgres:10.10
+        environment:
+          POSTGRES_USER: circleci
 
+commands:
+  defaults:
     steps:
       - checkout
+
+      - save_cache:
+          paths:
+            - /vendor/bundle
+          key: v1-dependencies-{{ checksum "rubyhub.gemspec" }}
 
       - restore_cache:
           keys:
@@ -22,10 +37,11 @@ jobs:
       - run:
           name: Install Code Climate Test Reporter
           command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
+            mkdir -p tmp/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
 
-  test:
+  run_linters:
     steps:
       - run:
           name: Rubocop
@@ -39,51 +55,51 @@ jobs:
           name: run tests
           command: |
             mkdir -p /tmp/test-results
-            circleci tests glob "spec/**/*_spec.rb" > test_files.txt
-            cat test_files.txt | circleci tests split --split-by=timings > split_test_files.txt
-
-            TESTFILES="$(cat split_test_files.txt | xargs)"
-            if [ -z "$TESTFILES" ]; then echo  'No tests are scheduled to be executed on this node'; exit 0; fi
-
-            export SPEC="$TESTFILES"
-            export SPEC_OPTS="--format documentation --format RspecJunitFormatter --out tmp/test-results/rspec-${CIRCLE_NODE_INDEX:-0}.xml"
-
-            bundle exec rspec
+            bundle exec rspec --format documentation \
+                              --format RspecJunitFormatter \
+                              --out tmp/test-results/rspec/results.xml \
+                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
 
       - run:
           name: Code Climate Test Coverage
           command: |
-            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
+            ./tmp/cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
 
       - persist_to_workspace:
-          root: coverage
-          paths:
-            - codeclimate.*.json
+        root: coverage
+        paths:
+          - codeclimate.*.json
 
       - store_test_results:
           path: /tmp/test-results
-
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
 
-  upload-coverage:
-    docker:
-      - image: circleci/ruby:2.6.3-node-browsers
-    environment:
-      CC_TEST_REPORTER_ID: e8ca212e976015d9bf1c9a519376032b4919c7da46a7cc30fd14de2eff2a5945
-    steps:
-      - run:
-          command: |
-            ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
-workflows:
-  version: 2
+    upload-coverage:
+      environment:
+        CC_TEST_REPORTER_ID: e8ca212e976015d9bf1c9a519376032b4919c7da46a7cc30fd14de2eff2a5945
+      steps:
+        - run:
+            command: |
+              ./tmp/cc-test-reporter sum-coverage --output - codeclimate.*.json | ./tmp/cc-test-reporter upload-coverage --debug --input -
+
+jobs:
   build_and_test:
+    executor: default
+    steps:
+      - defaults
+      - run_linters
+  uploading_coverage:
+    executor: default
+    steps:
+      - upload-coverage
+
+workflows:
+  version: 2.1
+  build:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
-      - upload-coverage:
-          requires:
-            - test
+      - build_and_test
+      - uploading_coverage:
+        requires:
+          - build_and_test

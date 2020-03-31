@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry', '~> 0.13.0'
   spec.add_development_dependency 'rake', '~> 13.0.1'
   spec.add_development_dependency 'rspec', '~> 3.9.0'
+  spec.add_development_dependency 'rspec_junit_formatter', '~> 0.4.1'
   spec.add_development_dependency 'rubocop', '~> 0.80.1'
   spec.add_development_dependency 'rubocop-performance', '~> 1.5.2'
   spec.add_development_dependency 'rubocop-rspec', '~> 1.38.1'
