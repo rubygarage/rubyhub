@@ -19,7 +19,7 @@ commands:
 
       - save_cache:
           paths:
-            - ./vendor/bundle
+            - /vendor/bundle
           key: v1-dependencies-{{ checksum "rubyhub.gemspec" }}
 
       - restore_cache:
@@ -47,16 +47,10 @@ commands:
           name: run tests
           command: |
             mkdir -p /tmp/test-results
-            circleci tests glob "spec/**/*_spec.rb" > test_files.txt
-            cat test_files.txt | circleci tests split --split-by=timings > split_test_files.txt
-
-            TESTFILES="$(cat split_test_files.txt | xargs)"
-            if [ -z "$TESTFILES" ]; then echo  'No tests are scheduled to be executed on this node'; exit 0; fi
-
-            export SPEC="$TESTFILES"
-            export SPEC_OPTS="--format documentation --format RspecJunitFormatter --out tmp/test-results/rspec-${CIRCLE_NODE_INDEX:-0}.xml"
-
-            bundle exec rspec
+            bundle exec rspec --format documentation \
+                              --format RspecJunitFormatter \
+                              --out tmp/test-results/ \
+                              $(circleci tests glob "spec/**/*_spec.rb" > test_files.txt | circleci tests split --split-by=timings > split_test_files.txt)
 
       - store_test_results:
           path: tmp/test-results
