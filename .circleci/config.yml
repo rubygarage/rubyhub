@@ -89,9 +89,6 @@ jobs:
     steps:
       - defaults
       - run_linters
-  uploading_coverage:
-    executor: default
-    steps:
       - upload_coverage
 
 workflows:
@@ -99,6 +96,3 @@ workflows:
   build:
     jobs:
       - build_and_test
-      - uploading_coverage:
-          requires:
-            - build_and_test
