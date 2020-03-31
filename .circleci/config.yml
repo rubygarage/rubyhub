@@ -65,7 +65,7 @@ commands:
       - run:
           name: Code Climate Test Coverage
           command: |
-            ./cc-test-reporter format-coverage -t simplecov
+            ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json
 
       - store_test_results:
           path: /tmp/test-results
