@@ -39,9 +39,8 @@ commands:
       - run:
           name: Install Code Climate Test Reporter
           command: |
-            mkdir -p tmp/
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
-            chmod +x ./tmp/cc-test-reporter
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
 
   run_linters:
     steps:
@@ -57,6 +56,7 @@ commands:
           name: run tests
           command: |
             mkdir -p /tmp/test-results
+            ./cc-test-reporter before-build
             bundle exec rspec --format documentation \
                               --format RspecJunitFormatter \
                               --out tmp/test-results/rspec/results.xml \
@@ -65,12 +65,7 @@ commands:
       - run:
           name: Code Climate Test Coverage
           command: |
-            ./tmp/cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
-
-      - persist_to_workspace:
-          root: coverage
-          paths:
-            - codeclimate.*.json
+            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
 
       - store_test_results:
           path: /tmp/test-results
@@ -82,8 +77,8 @@ commands:
     steps:
       - run:
           command: |
-            ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
-            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+            ./cc-test-reporter sum-coverage coverage/codeclimate.*.json -p 2 -o coverage/codeclimate.total.json
+            ./cc-test-reporter upload-coverage -i coverage/codeclimate.total.json
 
 jobs:
   build_and_test:
