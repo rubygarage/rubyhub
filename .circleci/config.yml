@@ -49,8 +49,8 @@ commands:
             mkdir -p /tmp/test-results
             bundle exec rspec --format documentation \
                               --format RspecJunitFormatter \
-                              --out tmp/test-results/ \
-                              $(circleci tests glob "spec/**/*_spec.rb" > test_files.txt | circleci tests split --split-by=timings > split_test_files.txt)
+                              --out tmp/test-results/rspec/results.xml \
+                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
 
       - store_test_results:
           path: tmp/test-results
