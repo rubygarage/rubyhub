@@ -11,20 +11,16 @@ module Rubyhub
 
         class << self
           def call
-            initialize_template(TEMPLATE_PATH)
-            return if Rubyhub::Configuration.exists?(Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH)
+            return puts CONFIG_EXISTS_MESSAGE if Rubyhub::Configuration.exists?
+
+            initialize_config(TEMPLATE_PATH)
+            puts CONFIG_INSTALLED_MESSAGE
+            return if File.exist?(Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH)
 
             initialize_config(DESCRIPTION_CONFIG_PATH)
           end
 
           private
-
-          def initialize_template(file)
-            return puts CONFIG_EXISTS_MESSAGE if Rubyhub::Configuration.exists?(Rubyhub::Configuration::CONFIG_PATH)
-
-            initialize_config(file)
-            puts CONFIG_INSTALLED_MESSAGE
-          end
 
           def initialize_config(file)
             FileUtils.cp full_template_path(file), target_path, preserve: true, verbose: false

@@ -13,12 +13,12 @@ module Rubyhub
 
     def initialize
       @options = self.class.exists?(CONFIG_PATH) ? load_from_file : {}
-      @main_body = self.class.exists?(DESCRIPTION_CONFIG_PATH) ? read_description_from_file : {}
+      @main_body = File.exist?(DESCRIPTION_CONFIG_PATH) ? read_description_from_file : {}
     end
 
     class << self
-      def exists?(file)
-        File.exist?(file)
+      def exists?
+        File.exist?(CONFIG_PATH)
       end
     end
 

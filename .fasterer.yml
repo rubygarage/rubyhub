@@ -1,5 +1,5 @@
 speedups:
-  rescue_vs_respond_to: false
+  rescue_vs_respond_to: true
   module_eval: true
   shuffle_first_vs_sample: true
   for_loop_vs_each: true

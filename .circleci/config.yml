@@ -52,6 +52,8 @@ commands:
           name: Fasterer
           command: bundle exec fasterer
 
+  run_specs:
+    steps:
       - run:
           name: run tests
           command: |
@@ -88,6 +90,7 @@ jobs:
     steps:
       - defaults
       - run_linters
+      - run_specs
 
 workflows:
   version: 2.1
