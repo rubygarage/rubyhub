@@ -53,20 +53,14 @@ RSpec.describe Rubyhub::Operations::PullRequest::Create do
     context 'when description' do
       before do
         allow(Rubyhub::Configuration).to receive(:exists?).and_return(true)
-        allow(YAML).to receive(:load_file).and_return(options_without_desc)
-        allow(File).to receive(:exist?)
+        allow(YAML).to receive(:load_file)
+        allow_any_instance_of(Rubyhub::Configuration).to receive(:options).and_return(options_without_desc)
       end
 
       it 'added to data from file' do
-        allow(File).to receive(:exist?).with(Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH).and_return(true)
-        allow_any_instance_of(Rubyhub::Configuration).to receive(:read_description_from_file)
-          .and_return('changes from file')
-
         expect_any_instance_of(Rubyhub::PullRequest).to receive(:create!).and_return(pull_request)
 
         described_class.call(template)
-
-        expect(described_class.instance_variable_get(:@data)[:description_main_body]).to eq('changes from file')
       end
     end
   end
