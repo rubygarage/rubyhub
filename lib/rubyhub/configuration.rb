@@ -12,7 +12,7 @@ module Rubyhub
     DESCRIPTION_CONFIG_PATH = '.description.txt'.freeze
 
     def initialize
-      @options = self.class.exists?(CONFIG_PATH) ? load_from_file : {}
+      @options = self.class.exists? ? load_from_file : {}
       @main_body = File.exist?(DESCRIPTION_CONFIG_PATH) ? read_description_from_file : {}
     end
 
