@@ -5,13 +5,8 @@ RSpec.describe Rubyhub::Operations::PullRequest::Create do
   let(:data) { { labels: 'label' } }
   let(:invalid_template) { { 'template': 'backenda' } }
   let(:pull_request) { instance_double('Rubyhub::PullRequest') }
-  let(:file) { Dir.pwd + '/' + Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH }
 
   describe '.call' do
-    after do
-      File.delete(file) if File.exist?(file)
-    end
-
     context 'when configuration does not exist' do
       it 'raises error message about configuration absence' do
         expect { described_class.call(template) }.to raise_error(Rubyhub::ConfigFileDoesNotExistError) do |ex|

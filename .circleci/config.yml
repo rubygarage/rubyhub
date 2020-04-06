@@ -12,7 +12,7 @@ executors:
         environment:
           POSTGRES_USER: circleci
     environment:
-      CC_TEST_REPORTER_ID: e8ca212e976015d9bf1c9a519376032b4919c7da46a7cc30fd14de2eff2a5945
+      CC_TEST_REPORTER_ID: ENV['CC_TEST_REPORTER_ID']
 
 commands:
   defaults:
