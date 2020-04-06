@@ -11,8 +11,6 @@ executors:
       - image: circleci/postgres:10.10
         environment:
           POSTGRES_USER: circleci
-    environment:
-      CC_TEST_REPORTER_ID: ENV['CC_TEST_REPORTER_ID']
 
 commands:
   defaults:
