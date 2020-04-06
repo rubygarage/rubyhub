@@ -1,12 +1,53 @@
 RSpec.describe Rubyhub::Configuration do
   let(:assignees) { 'base_branch'.to_sym }
   let(:options) { { 'default': { 'base_branch': 'master', 'labels': ['bug'] } } }
+  let(:symbolized_hash) { { default: { base_branch: 'master', labels: ['bug'] } } }
+  let(:desc_from_file) { 'changes from file' }
   let(:file) { Rubyhub::Configuration::CONFIG_PATH }
+  let(:desc_file) { Dir.pwd + '/' + Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH }
   let(:setup) { Rubyhub::Operations::Configuration::Setup.call }
 
   describe '#to_h' do
     it 'converts options to hash' do
       expect(DeepSymbolizeKeysHelper.symbolize_recursive(options).values.first).to have_key(assignees)
+    end
+  end
+
+  describe '#initialize' do
+    context 'when options are loaded from file' do
+      before do
+        Singleton.__init__(described_class)
+      end
+
+      it 'returns empty hash' do
+        expect(described_class.instance.options).to eq({})
+      end
+
+      it 'returns symbolized hash' do
+        allow(described_class).to receive(:exists?).and_return(true)
+        allow(YAML).to receive(:load_file).and_return(options)
+
+        expect(described_class.instance.options).to eq(symbolized_hash)
+      end
+    end
+
+    context 'when description' do
+      before do
+        Singleton.__init__(described_class)
+        allow(described_class).to receive(:exists?).and_return(false)
+        allow(File).to receive(:exist?)
+      end
+
+      it 'is taken from config' do
+        expect(described_class.instance.main_body).to eq({})
+      end
+
+      it 'loaded from file' do
+        allow(File).to receive(:exist?).with(Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH).and_return(true)
+        allow_any_instance_of(described_class).to receive(:read_description_from_file).and_return(desc_from_file)
+
+        expect(described_class.instance.main_body).to eq(desc_from_file)
+      end
     end
   end
 
@@ -18,6 +59,7 @@ RSpec.describe Rubyhub::Configuration do
 
       after do
         File.delete(file) if File.exist?(file)
+        File.delete(desc_file) if File.exist?(desc_file)
       end
 
       it 'returns true' do

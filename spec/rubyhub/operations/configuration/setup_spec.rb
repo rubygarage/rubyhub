@@ -1,13 +1,18 @@
 RSpec.describe Rubyhub::Operations::Configuration::Setup do
-  let(:temporary_path) { "#{Dir.pwd}/spec" }
+  let(:temporary_path) { "#{Dir.pwd}/spec/" }
+  let(:config) { '.rubyhub.yml' }
+  let(:desc_config) { '.description.txt' }
 
   before do
     allow(Dir).to receive(:pwd).and_return(temporary_path)
   end
 
   after do
-    path_to_temporary_config = "#{temporary_path}/.rubyhub.yml"
+    path_to_temporary_config = "#{temporary_path}#{config}"
     File.delete(path_to_temporary_config) if File.exist?(path_to_temporary_config)
+
+    path_to_desc_file = "#{temporary_path}#{desc_config}"
+    File.delete(path_to_desc_file) if File.exist?(path_to_desc_file)
   end
 
   describe '.call' do
