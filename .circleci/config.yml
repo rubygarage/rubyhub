@@ -30,14 +30,6 @@ commands:
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - cc-test-reporter
-      - save_cache:
-          key: cc-setup-<< parameters.version >>
-          paths:
-            - ./cc-test-reporter
 
   run_linters:
     steps:
@@ -130,7 +122,15 @@ jobs:
           key: checkout-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
+
+  cc-setup-coverage:
+    executor: default
+    steps:
       - cc-setup-coverage
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - cc-test-reporter
 
   ruby-2-4:
     executor:
@@ -220,21 +220,27 @@ workflows:
   build:
     jobs:
       - checkout
+      - cc-setup-coverage
       - ruby-2-4:
           requires:
             - checkout
+            - cc-setup-coverage
       - ruby-2-5:
           requires:
             - checkout
+            - cc-setup-coverage
       - ruby-2-6:
           requires:
             - checkout
+            - cc-setup-coverage
       - ruby-2-7:
           requires:
             - checkout
+            - cc-setup-coverage
       - ruby-head:
           requires:
             - checkout
+            - cc-setup-coverage
       - cc-upload-coverage:
           requires:
             - ruby-2-4
