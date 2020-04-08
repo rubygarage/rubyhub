@@ -236,7 +236,7 @@ jobs:
           at: ~/rubyhub/tmp
       - cc-sum-coverage:
           input: tmp/codeclimate.*.json
-          parts: 4
+          parts: 3
       - cc-upload-coverage
 
 workflows:
