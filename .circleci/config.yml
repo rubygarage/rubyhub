@@ -55,7 +55,7 @@ commands:
             bundle exec rspec --format documentation \
                               --format RspecJunitFormatter \
                               --out tmp/test-results/results.xml \
-                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings) --debug
+                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
 
       - run:
           name: Code Climate Test Coverage
