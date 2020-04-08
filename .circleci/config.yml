@@ -10,12 +10,6 @@ executors:
     working_directory: ~/rubyhub
     docker:
       - image: circleci/ruby:<< parameters.tag >>-node
-        environment:
-          RAILS_ENV: test
-          PGHOST: 127.0.0.1
-      - image: circleci/postgres:10.10
-        environment:
-          POSTGRES_USER: circleci
 
 commands:
   cc-setup-coverage:
