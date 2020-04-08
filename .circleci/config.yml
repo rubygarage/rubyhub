@@ -53,8 +53,6 @@ commands:
                               --out tmp/test-results/results.xml \
                               $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
 
-  cc-format-coverage:
-    steps:
       - run:
           name: Code Climate Test Coverage
           command: |
@@ -146,7 +144,6 @@ jobs:
           key: ruby-2.4
       - run_linters
       - run_specs
-      - cc-format-coverage
 
   ruby-2-5:
     executor:
@@ -162,7 +159,6 @@ jobs:
           key: ruby-2.5
       - run_linters
       - run_specs
-      - cc-format-coverage
 
   ruby-2-6:
     executor:
@@ -178,7 +174,6 @@ jobs:
           key: ruby-2.6
       - run_linters
       - run_specs
-      - cc-format-coverage
 
   ruby-2-7:
     executor:
@@ -194,7 +189,6 @@ jobs:
           key: ruby-2.7
       - run_linters
       - run_specs
-      - cc-format-coverage
 
   ruby-head:
     executor: default
@@ -208,7 +202,6 @@ jobs:
           key: ruby-head
       - run_linters
       - run_specs
-      - cc-format-coverage
 
   cc-upload-coverage:
     executor: default
