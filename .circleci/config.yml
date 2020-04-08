@@ -175,20 +175,6 @@ jobs:
           paths:
             - cc-test-reporter
 
-  ruby-2-4:
-    executor:
-      name: default
-      tag: "2.4"
-    steps:
-      - restore_cache:
-          key: checkout-{{ .Branch }}-{{ .Revision }}
-      - bundle-load-cache:
-          key: ruby-2.4
-      - bundle-install
-      - bundle-save-cache:
-          key: ruby-2.4
-      - rspec
-
   ruby-2-5:
     executor:
       name: default
@@ -259,10 +245,6 @@ workflows:
     jobs:
       - checkout
       - cc-setup-coverage
-      - ruby-2-4:
-          requires:
-            - checkout
-            - cc-setup-coverage
       - ruby-2-5:
           requires:
             - checkout
@@ -281,7 +263,6 @@ workflows:
             - cc-setup-coverage
       - cc-upload-coverage:
           requires:
-            - ruby-2-4
             - ruby-2-5
             - ruby-2-6
             - ruby-2-7
