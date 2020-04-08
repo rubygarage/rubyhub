@@ -52,7 +52,8 @@ commands:
                               --format RspecJunitFormatter \
                               --out tmp/test-results/results.xml \
                               $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-
+      - attach_workspace:
+          at: ~/rubyhub
       - run:
           name: Code Climate Test Coverage
           command: |
@@ -206,6 +207,8 @@ jobs:
   cc-upload-coverage:
     executor: default
     steps:
+      - attach_workspace:
+          at: ~/rubyhub
       - cc-upload-coverage
 
 workflows:
