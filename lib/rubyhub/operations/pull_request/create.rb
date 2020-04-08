@@ -26,7 +26,15 @@ module Rubyhub
           end
 
           def add_description_to_data
-            @data[:description_main_body] = Rubyhub::Configuration.instance.main_body
+            @data[:description_main_body] = read_description_from_file
+          end
+
+          def description_path
+            @description = @data[:description_path].is_a?(String) ? @data[:description_path] : ''
+          end
+
+          def read_description_from_file
+            File.exist?(description_path) ? File.read(description_path) : ''
           end
         end
       end

@@ -17,7 +17,7 @@
 #       - you
 #       - want
 #     description_main_body: describe your changes here
-#     description_path: .git/description.txt
+#     description_path: .github/description.txt
 #     jira_base_url: https://sample.atlassian.net/browse/
 #     push: false
 #     open: true

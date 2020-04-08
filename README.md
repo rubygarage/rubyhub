@@ -5,6 +5,8 @@
 
 Rubyhub allows you to create pull requests faster with all сomponents - labels, assignees, reviewers and other stuff you had to put manually each time.
 
+At this very moment Rubyhub supports operations only with `Github`.
+
 ## Installation
 
 Install [Github's Hub](https://github.com/github/hub)
@@ -35,6 +37,8 @@ Or install it yourself as:
 
     `$ rubyhub create -t your_template_name`
 
+See [usage examples](https://github.com/rubygarage/rubyhub/wiki/Usage) or the full [reference documentation](https://github.com/rubygarage/rubyhub/wiki) to see all available commands and flags.
+
 ## Configuration options
 | Config                | Description                                                                                                                                                                                                                                                         | Example                                |
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
@@ -44,7 +48,7 @@ Or install it yourself as:
 | labels                | Array. List of labels                                                                                                                                                                                                                                               | - needs_review<br>- some_another_label |
 | jira_base_url         | String. The first line of your Pull Request description could be JIRA link to your task<br>Put here the constant part of your URL.<br>Task name would be taken from your branch name.<br><br>feature/MyTask-1399 -> https://sample.atlassian.net/browse/MyTask-1399 | https://sample.atlassian.net/browse/   |
 | description_main_body | String. Put the description template here. We recommended to use Markdown.<br><br>Note: The first line of your body - would be a title of your pull-request                                                                                                         | Feature / RGWEB<br><br>Great moments!  |
-| description_path      | String. Put the path to your PR's description file. |  .git/description.txt
+| description_path      | String. Put the path to your PR's description file. |  .github/description.txt
 | push                  | Boolean. These options allows to push the code to Github before creating the pull-request                                                                                                                                                                           | true                                   |
 | open                  | Boolean. Open the pull-request after creating                                                                                                                                                                                                                       | true                                   |
 
