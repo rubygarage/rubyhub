@@ -96,7 +96,12 @@ commands:
   bundle-install:
     description: Install gems with Bundler
     steps:
-      - run: bundle install
+      - run:
+          name: install dependencies
+          command: |
+            gem update --system
+            gem install bundler
+            bundle install
 
   bundle-save-cache:
     description: Save RubyGems to cache
