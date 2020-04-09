@@ -1,11 +1,17 @@
 require:
   - rubocop-performance
   - rubocop-rspec
+  - rubocop-md
 
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
     - rubyhub.gemspec
+
+Style/HashSyntax:
+  Exclude:
+    - spec/rubyhub/operations/pull_request/create_spec.rb
+    - spec/rubyhub/configuration_spec.rb
 
 Metrics/LineLength:
   Max: 120

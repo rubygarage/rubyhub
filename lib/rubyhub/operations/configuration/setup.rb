@@ -5,7 +5,6 @@ module Rubyhub
     module Configuration
       class Setup
         TEMPLATE_PATH = 'lib/rubyhub/config/templates/.rubyhub.yml'.freeze
-        DESCRIPTION_CONFIG_PATH = 'lib/rubyhub/config/templates/.description.txt'.freeze
         CONFIG_EXISTS_MESSAGE = 'Config already exists!'.freeze
         CONFIG_INSTALLED_MESSAGE = 'Config successfully installed!'.freeze
 
@@ -13,21 +12,18 @@ module Rubyhub
           def call
             return puts CONFIG_EXISTS_MESSAGE if Rubyhub::Configuration.exists?
 
-            initialize_config(TEMPLATE_PATH)
+            initialize_config
             puts CONFIG_INSTALLED_MESSAGE
-            return if File.exist?(Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH)
-
-            initialize_config(DESCRIPTION_CONFIG_PATH)
           end
 
           private
 
-          def initialize_config(file)
-            FileUtils.cp full_template_path(file), target_path, preserve: true, verbose: false
+          def initialize_config
+            FileUtils.cp full_template_path, target_path, preserve: true, verbose: false
           end
 
-          def full_template_path(file)
-            File.join(Rubyhub.root_path, file)
+          def full_template_path
+            File.join(Rubyhub.root_path, TEMPLATE_PATH)
           end
 
           def target_path

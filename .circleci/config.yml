@@ -1,34 +1,119 @@
 version: 2.1
 
+aliases:
+  working_directory: &working_directory
+    working_directory: ~/rubyhub
+
 executors:
   default:
-    working_directory: ~/rubyhub
+    description: The official CircleCI Ruby Docker image
+    parameters:
+      tag:
+        description: The circleci/ruby Docker image version tag
+        type: string
+        default: latest
     docker:
-      - image: circleci/ruby:2.6.3-node-browsers
-        environment:
-          RAILS_ENV: test
-          PGHOST: 127.0.0.1
-      - image: circleci/postgres:10.10
-        environment:
-          POSTGRES_USER: circleci
+      - image: circleci/ruby:<< parameters.tag >>-node
     environment:
-      CC_TEST_REPORTER_ID: e8ca212e976015d9bf1c9a519376032b4919c7da46a7cc30fd14de2eff2a5945
+      - BUNDLE_JOBS: 4
+      - BUNDLE_PATH: vendor/bundle
+      - BUNDLE_RETRY: 3
+    <<: *working_directory
 
 commands:
-  defaults:
+  cc-setup-coverage:
+    description: Setup Code Climate
+    parameters:
+      url:
+        description: Pre-built binary URL
+        default: https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+        type: string
+      version:
+        default: latest
+        type: string
     steps:
-      - checkout
-
-      - save_cache:
-          paths:
-            - /vendor/bundle
-          key: v1-dependencies-{{ checksum "rubyhub.gemspec" }}
-
       - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "rubyhub.gemspec" }}
-            - v1-dependencies-
+          key: cc-setup-<< parameters.version >>
+      - run:
+          name: Setup coverage
+          command: |
+            if [[ $(command -v cc-test-reporter) == "" ]]; then
+              mkdir -p tmp/
+              sudo curl -s -o ./tmp/cc-test-reporter -L << parameters.url >>
+              sudo chmod +x ./tmp/cc-test-reporter
+            else
+              echo "Already installed."
+            fi
+      - save_cache:
+          key: cc-setup-<< parameters.version >>
+          paths:
+            - ./tmp/cc-test-reporter
 
+  cc-sum-coverage:
+    description: Combine (sum) multiple pre-formatted coverage payloads into one
+    parameters:
+      input:
+        description: File glob of the files to combine
+        type: string
+      output:
+        description: The output path
+        default: ./tmp/coverage/codeclimate.json
+        type: string
+      parts:
+        description: The total number of parts to combine (sum)
+        default: 1
+        type: integer
+    steps:
+      - run:
+          name: Sum coverage
+          command: |
+            ./tmp/cc-test-reporter sum-coverage << parameters.input >> --output << parameters.output >> \
+                                                                       --parts << parameters.parts >>
+  cc-upload-coverage:
+    description: Upload coverage payload to Code Climate
+    parameters:
+      input:
+        description: The input path
+        default: ./tmp/coverage/codeclimate.json
+        type: string
+    steps:
+      - run:
+          name: Upload coverage
+          command: |
+            ./tmp/cc-test-reporter upload-coverage --input << parameters.input >>
+  cc-format-coverage:
+    description: Locate, parse, and re-format supported coverage sources
+    parameters:
+      input-type:
+        description: The type of input source to use
+        enum:
+          - simplecov
+          - lcov
+        type: enum
+      output:
+        description: The output path
+        default: coverage/codeclimate.json
+        type: string
+    steps:
+      - run:
+          name: Format coverage
+          command: |
+            ./tmp/cc-test-reporter format-coverage --input-type << parameters.input-type >> \
+                                                   --output << parameters.output >>
+  bundle-load-cache:
+    description: Load cached RubyGems
+    parameters:
+      key:
+        description: The cache key to use
+        type: string
+        default: bundle-v1
+    steps:
+      - restore_cache:
+          key: 'bundle-v1-<< parameters.key >>-{{ arch }}-{{ checksum "rubyhub.gemspec" }}'
+
+  bundle-install:
+    description: Install gems with Bundler
+    steps:
       - run:
           name: install dependencies
           command: |
@@ -36,64 +121,154 @@ commands:
             gem install bundler
             bundle install --jobs=4 --retry=3 --path vendor/bundle
 
-      - run:
-          name: Install Code Climate Test Reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
+  bundle-save-cache:
+    description: Save RubyGems to cache
+    parameters:
+      key:
+        description: The cache key to use
+        type: string
+        default: bundle-v1
+    steps:
+      - save_cache:
+          key: 'bundle-v1-<< parameters.key >>-{{ arch }}-{{ checksum "rubyhub.gemspec" }}'
+          paths:
+            - vendor/bundle
 
-  run_linters:
+  rspec:
+    description: Test with RSpec
     steps:
       - run:
           name: Rubocop
           command: bundle exec rubocop
-
       - run:
           name: Fasterer
           command: bundle exec fasterer
-
-  run_specs:
-    steps:
-      - run:
-          name: run tests
-          command: |
-            mkdir -p /tmp/test-results
-            ./cc-test-reporter before-build
-            bundle exec rspec --format documentation \
-                              --format RspecJunitFormatter \
-                              --out tmp/test-results/results.xml \
-                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-
-      - run:
-          name: Code Climate Test Coverage
-          command: |
-            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
+      - attach_workspace:
+          at: ~/rubyhub/tmp
+      - run: >
+          bundle exec rspec --format RspecJunitFormatter --out test_results/rspec.xml
+      - cc-format-coverage:
+          input-type: simplecov
+          output: ./tmp/codeclimate.$CIRCLE_JOB.json
       - persist_to_workspace:
-          root: coverage
+          root: tmp
           paths:
             - codeclimate.*.json
-
-      - run:
-          name: Code Climate Upload Coverage
-          command: |
-            ./cc-test-reporter sum-coverage --output - coverage/codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
-
       - store_test_results:
-          path: /tmp/test-results
+          path: test_results
       - store_artifacts:
-          path: /tmp/test-results
+          path: test_results
           destination: test-results
 
 jobs:
-  build_and_test:
+  checkout:
     executor: default
     steps:
-      - defaults
-      - run_linters
-      - run_specs
+      - restore_cache:
+          key: checkout-{{ .Branch }}-{{ .Revision }}
+      - checkout
+      - save_cache:
+          key: checkout-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .
+
+  cc-setup-coverage:
+    executor: default
+    steps:
+      - cc-setup-coverage
+      - persist_to_workspace:
+          root: ./tmp
+          paths:
+            - cc-test-reporter
+
+  ruby-2-5:
+    executor:
+      name: default
+      tag: "2.5"
+    steps:
+      - restore_cache:
+          key: checkout-{{ .Branch }}-{{ .Revision }}
+      - bundle-load-cache:
+          key: ruby-2.5
+      - bundle-install
+      - bundle-save-cache:
+          key: ruby-2.5
+      - rspec
+
+  ruby-2-6:
+    executor:
+      name: default
+      tag: "2.6"
+    steps:
+      - restore_cache:
+          key: checkout-{{ .Branch }}-{{ .Revision }}
+      - bundle-load-cache:
+          key: ruby-2.6
+      - bundle-install
+      - bundle-save-cache:
+          key: ruby-2.6
+      - rspec
+
+  ruby-2-7:
+    executor:
+      name: default
+      tag: "2.7"
+    steps:
+      - restore_cache:
+          key: checkout-{{ .Branch }}-{{ .Revision }}
+      - bundle-load-cache:
+          key: ruby-2.7
+      - bundle-install
+      - bundle-save-cache:
+          key: ruby-2.7
+      - rspec
+
+  ruby-head:
+    executor: default
+    steps:
+      - restore_cache:
+          key: checkout-{{ .Branch }}-{{ .Revision }}
+      - bundle-load-cache:
+          key: ruby-head
+      - bundle-install
+      - bundle-save-cache:
+          key: ruby-head
+      - rspec
+
+  cc-upload-coverage:
+    executor: default
+    steps:
+      - attach_workspace:
+          at: ~/rubyhub/tmp
+      - cc-sum-coverage:
+          input: tmp/codeclimate.*.json
+          parts: 3
+      - cc-upload-coverage
 
 workflows:
-  version: 2.1
-  build:
+  version: 2
+  default: &default
     jobs:
-      - build_and_test
+      - checkout
+      - cc-setup-coverage
+      - ruby-2-5:
+          requires:
+            - checkout
+            - cc-setup-coverage
+      - ruby-2-6:
+          requires:
+            - checkout
+            - cc-setup-coverage
+      - ruby-2-7:
+          requires:
+            - checkout
+            - cc-setup-coverage
+      - ruby-head:
+          requires:
+            - checkout
+            - cc-setup-coverage
+      - cc-upload-coverage:
+          requires:
+            - ruby-2-5
+            - ruby-2-6
+            - ruby-2-7

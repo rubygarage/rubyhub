@@ -21,12 +21,20 @@ module Rubyhub
             return unless @data.respond_to?(:to_hash)
 
             description = @data[:description_main_body]
-            add_description_from_file if description.nil? || description.empty?
+            add_description_to_data if description.nil? || description.empty?
             @data
           end
 
-          def add_description_from_file
-            @data[:description_main_body] = Rubyhub::Configuration.instance.main_body
+          def add_description_to_data
+            @data[:description_main_body] = read_description_from_file
+          end
+
+          def description_path
+            @description = @data[:description_path].is_a?(String) ? @data[:description_path] : ''
+          end
+
+          def read_description_from_file
+            File.exist?(description_path) ? File.read(description_path) : ''
           end
         end
       end

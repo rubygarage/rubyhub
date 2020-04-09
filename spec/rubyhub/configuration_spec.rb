@@ -4,7 +4,6 @@ RSpec.describe Rubyhub::Configuration do
   let(:symbolized_hash) { { default: { base_branch: 'master', labels: ['bug'] } } }
   let(:desc_from_file) { 'changes from file' }
   let(:file) { Rubyhub::Configuration::CONFIG_PATH }
-  let(:desc_file) { Dir.pwd + '/' + Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH }
   let(:setup) { Rubyhub::Operations::Configuration::Setup.call }
 
   describe '#to_h' do
@@ -30,25 +29,6 @@ RSpec.describe Rubyhub::Configuration do
         expect(described_class.instance.options).to eq(symbolized_hash)
       end
     end
-
-    context 'when description' do
-      before do
-        Singleton.__init__(described_class)
-        allow(described_class).to receive(:exists?).and_return(false)
-        allow(File).to receive(:exist?)
-      end
-
-      it 'is taken from config' do
-        expect(described_class.instance.main_body).to eq({})
-      end
-
-      it 'loaded from file' do
-        allow(File).to receive(:exist?).with(Rubyhub::Configuration::DESCRIPTION_CONFIG_PATH).and_return(true)
-        allow_any_instance_of(described_class).to receive(:read_description_from_file).and_return(desc_from_file)
-
-        expect(described_class.instance.main_body).to eq(desc_from_file)
-      end
-    end
   end
 
   describe '#exists?' do
@@ -59,7 +39,6 @@ RSpec.describe Rubyhub::Configuration do
 
       after do
         File.delete(file) if File.exist?(file)
-        File.delete(desc_file) if File.exist?(desc_file)
       end
 
       it 'returns true' do
