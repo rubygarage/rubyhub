@@ -16,7 +16,7 @@ module Rubyhub
           attr_reader :template
 
           def data
-            @data ||= Rubyhub::Configuration.instance.to_h.dig(:template, template.to_sym)
+            @data ||= Rubyhub::Configuration.instance.options.dig(:template, template.to_sym)
           end
         end
       end
