@@ -23,9 +23,9 @@ Gem::Specification.new do |spec|
     Note that Rubyhub requires additional dependencies!
 
     Please install https://github.com/github/hub
-  '
+'
 
-  spec.add_dependency 'thor', '~> 1.0'
+  spec.add_dependency 'thor'
 
   spec.add_development_dependency 'bundler', '~> 2.1'
   spec.add_development_dependency 'fasterer', '~> 0.8'
