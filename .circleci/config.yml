@@ -136,6 +136,12 @@ commands:
   rspec:
     description: Test with RSpec
     steps:
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop
+      - run:
+          name: Fasterer
+          command: bundle exec fasterer
       - attach_workspace:
           at: ~/rubyhub/tmp
       - run: >

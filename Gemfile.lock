@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    rubyhub (0.1.8)
-      thor
+    rubyhub (0.2.0)
+      thor (~> 1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -51,6 +51,8 @@ GEM
       rexml
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
+    rubocop-md (0.3.2)
+      rubocop (~> 0.60)
     rubocop-performance (1.5.2)
       rubocop (>= 0.71.0)
     rubocop-rspec (1.38.1)
@@ -71,16 +73,17 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler
-  fasterer
-  ffaker
-  pry
-  rake
-  rspec
-  rspec_junit_formatter
-  rubocop
-  rubocop-performance
-  rubocop-rspec
+  bundler (~> 2.1)
+  fasterer (~> 0.8)
+  ffaker (~> 2.14)
+  pry (~> 0.13)
+  rake (~> 13.0)
+  rspec (~> 3.9)
+  rspec_junit_formatter (~> 0.4)
+  rubocop (~> 0.81)
+  rubocop-md (~> 0.3)
+  rubocop-performance (~> 1.5)
+  rubocop-rspec (~> 1.38)
   rubyhub!
   simplecov (~> 0.15, < 0.18)
 

@@ -5,6 +5,7 @@ module Rubyhub
         class << self
           def call(options)
             @template = options[:template]
+
             raise ConfigFileDoesNotExistError unless Rubyhub::Configuration.exists?
             raise IncorrectTemplateError if !template || !data || data.empty?
 
