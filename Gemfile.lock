@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    rubyhub (0.2.1)
-      thor
+    rubyhub (0.2.0)
+      thor (~> 1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -22,7 +22,7 @@ GEM
     parallel (1.19.1)
     parser (2.7.1.0)
       ast (~> 2.4.0)
-    pry (0.13.1)
+    pry (0.13.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
     rainbow (3.0.0)
@@ -88,4 +88,4 @@ DEPENDENCIES
   simplecov (~> 0.15, < 0.18)
 
 BUNDLED WITH
-   2.1.4
+   2.1.2
